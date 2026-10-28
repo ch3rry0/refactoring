@@ -2,13 +2,21 @@ package fr.efrei.transfret;
 
 public class ServiceClient {
 
-    public Client creerClient(String nom, String email, String telephone, String adresse, TypeClient type, String siret) {
+    private final ClientRepository clients;
+    private final CanalNotification email;
+
+    public ServiceClient(ClientRepository clients, CanalNotification email) {
+        this.clients = clients;
+        this.email = email;
+    }
+
+    public Client creerClient(String nom, String emailAddress, String telephone, String adresse, TypeClient type, String siret) {
         if (nom == null || nom.trim().length() == 0) {
             System.out.println("ERREUR : nom obligatoire");
             return null;
         }
-        if (email == null || !email.contains("@") || !email.contains(".")) {
-            System.out.println("ERREUR : email invalide (" + email + ")");
+        if (emailAddress == null || !emailAddress.contains("@") || !emailAddress.contains(".")) {
+            System.out.println("ERREUR : email invalide (" + emailAddress + ")");
             return null;
         }
         if (type == null) {
@@ -19,9 +27,9 @@ public class ServiceClient {
             System.out.println("ERREUR : SIRET obligatoire (14 chiffres) pour une entreprise");
             return null;
         }
-        Client c = new Client(nom, email, telephone, adresse, type, siret);
-        Database.getInstance().sauvegarderClient(c);
-        EmailService.envoyer(c.getEmail(), "Bienvenue chez TransFret", "Bonjour " + c.getNom() + ", votre compte " + c.getType().name().toLowerCase() + " a été créé.");
+        Client c = new Client(nom, emailAddress, telephone, adresse, type, siret);
+        clients.sauvegarder(c);
+        email.envoyer(c.getEmail(), "Bienvenue chez TransFret", "Bonjour " + c.getNom() + ", votre compte " + c.getType().name().toLowerCase() + " a été créé.");
         return c;
     }
 }

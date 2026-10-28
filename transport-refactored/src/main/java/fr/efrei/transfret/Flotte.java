@@ -5,9 +5,17 @@ import java.util.List;
 
 public class Flotte {
 
-    public static List<Vehicule> vehicules = new ArrayList<Vehicule>();
+    private final List<Vehicule> vehicules = new ArrayList<>();
 
-    public static void initialiser() {
+    public Flotte() {
+        initialiser();
+    }
+
+    public List<Vehicule> vehicules() {
+        return vehicules;
+    }
+
+    private void initialiser() {
         vehicules.clear();
         vehicules.add(new Camion("AB-123-CD", 19000, false));
         vehicules.add(new Camion("EF-456-GH", 12000, true));
