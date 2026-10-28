@@ -51,7 +51,7 @@ public abstract class Vehicule implements IVehicule {
         }
     }
 
-    public void faireLePlein() {
-        System.out.println("Plein effectué pour " + immatriculation);
+    protected double poidsTotal(List<Colis> colis) {
+        return colis.stream().mapToDouble(Colis::getPoids).sum();
     }
 }
