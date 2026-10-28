@@ -15,6 +15,7 @@ public class CalculateurPrix {
         tarifs.put(ModeTransport.RAIL, new TarifRail());
         tarifs.put(ModeTransport.MER, new TarifMer());
         tarifs.put(ModeTransport.AIR, new TarifAir());
+        tarifs.put(ModeTransport.FLUVIAL, new TarifFluvial());
 
         remises = new EnumMap<>(TypeClient.class);
         remises.put(TypeClient.PARTICULIER, new AucuneRemise());
@@ -33,6 +34,9 @@ public class CalculateurPrix {
         prix = new SupplementFragile(prix);
         prix = new SupplementDangereux(prix);
         prix = new SupplementRefrigere(prix);
+        if (mode == ModeTransport.FLUVIAL) {
+            prix = new SupplementHorsGabarit(prix);
+        }
         prix = new SupplementUrgence(prix, urgent);
         prix = new DecorateurRemise(prix, remise(typeClient));
         return new Assurance(prix, assurance);
